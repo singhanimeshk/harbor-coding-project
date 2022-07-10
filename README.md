@@ -1,38 +1,158 @@
-# Harbor Take Home Project
 
-Welcome to the Harbor take home project. We hope this is a good opportunity for you to showcase your skills.
+# Calendar
 
-## The Challenge
+A set of APIs for basic Calendar operations
 
-Build us a REST API for calendly. Remember to support
 
-- Setting own availability
-- Showing own availability
-- Finding overlap in schedule between 2 users
 
-It is up to you what else to support.
 
-## Expectations
+## API Reference
 
-We care about
+#### Get all calendar schedules
 
-- Have you thought through what a good MVP looks like? Does your API support that?
-- What trade-offs are you making in your design?
-- Working code - we should be able to pull and hit the code locally. Bonus points if deployed somewhere.
-- Any good engineer will make hacks when necessary - what are your hacks and why?
+```http
+  GET /userSchedules/${userID}
+```
 
-We don't care about
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `userID` | `string` | **Required**. User ID for whom schedule is to be fetched |
 
-- Authentication
-- UI
-- Perfection - good and working quickly is better
+#### Create schedules
 
-It is up to you how much time you want to spend on this project. There are likely diminishing returns as the time spent goes up.
+```http
+  POST /userSchedules/${userID}
+```
 
-## Submission
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `userID`      | `string` | **Required**. User ID for whom schedule is to be created |
+| `schedules list`      | `List<ScheduleRequest>` | **Required**. Schedules where user is busy. Eg: |
 
-Please fork this repository and reach out to Prakash when finished.
+```http
+[
+    {
+        "start": "11/07/2022 19:00",
+        "end": "21/07/2022 20:00"
+    }
+]
+```
 
-## Next Steps
+#### Delete schedule
 
-After submission, we will conduct a 30 to 60 minute code review in person. We will ask you about your thinking and design choices.
+```http
+  DELETE /userSchedules/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Schedule ID to be deleted |
+
+#### Find mutually free schedules
+
+```http
+  POST /userSchedules/findFreeSchedule
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `users`      | `List<String>` | **Required**. User IDs for whom mutually free schedule to be fetched. Eg: |
+
+```http
+{
+    "users": ["a", "b"]
+}
+```
+
+#### Get Scheduler Setting
+
+```http
+  GET /schedulerSetting/${userID}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `userID`      | `string` | **Required**. User ID for whom setting is to be fetched |
+
+#### Create Scheduler Setting
+
+```http
+  POST /schedulerSetting/${userID}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `userID`      | `string` | **Required**. User ID for whom setting is to be created |
+| `Scheduler Settings`      | `SchedulerSetting` | **Required**. Busy scheduler setting for the user. Eg:   |
+
+```http
+{
+    "weeklyBusy": {
+        "1": [ {
+            "start": "00:00",
+            "end": "24:00"
+            }
+        ],
+        "2": [ {
+            "start": "00:00",
+            "end": "09:00"
+            },
+            {
+            "start": "17:00",
+            "end": "24:00"
+            }
+        ],
+        "3": [ {
+            "start": "00:00",
+            "end": "09:00"
+            },
+            {
+            "start": "17:00",
+            "end": "24:00"
+            }
+        ],
+        "4": [ {
+            "start": "00:00",
+            "end": "09:00"
+            },
+            {
+            "start": "17:00",
+            "end": "24:00"
+            }
+        ],
+        "5": [ {
+            "start": "00:00",
+            "end": "09:00"
+            },
+            {
+            "start": "17:00",
+            "end": "24:00"
+            }
+        ],
+        "6": [ {
+            "start": "00:00",
+            "end": "09:00"
+            },
+            {
+            "start": "17:00",
+            "end": "24:00"
+            }
+        ],
+        "7": [ {
+            "start": "00:00",
+            "end": "24:00"
+            }
+        ]
+    }
+}
+```
+
+#### Delete Scheduler Setting
+
+```http
+  DELETE /schedulerSetting/${userID}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `userID`      | `string` | **Required**. User ID for whom setting is to be deleted |
